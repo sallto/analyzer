@@ -5,23 +5,11 @@
       "enums": false,
       "interval": true
     },
+    "context": {
+      "widen": false
+    },
     "activated": [
-      "base",
-      "threadid",
-      "threadflag",
-      "mallocWrapper",
-      "mutexEvents",
-      "mutex",
-      "access",
-      "race",
-      "escape",
-      "expRelation",
-      "mhp",
-      "assert",
-      "var_eq",
-      "symb_locks",
-      "region",
-      "thread"
+     "base", "mallocWrapper","escape","mutex","mutexEvents","access", "race", "assert","termination"
     ],
     "base": {
       "arrays": {

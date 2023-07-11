@@ -1717,6 +1717,7 @@ struct
 
   module G = GVarGSet (S.G) (S.C) (Printable.Prod (CilType.Fundec) (S.C))
 
+  let graph = ref(Hashtbl.create 20)
   let name () = "termination"
 
   let conv (ctx: (_, G.t, _, V.t) ctx): (_, S.G.t, _, S.V.t) ctx =
@@ -1817,6 +1818,7 @@ struct
       let fd_e : fundec = f in (*Callee fundec*)
       let tup: (fundec * S.C.t) = (fd_r, c_r) in
       let t = G.CSet.singleton (tup) in
+      Hashtbl.add !graph fd_e (fd_r,S.C.to_yojson c_r);
       side_context ctx.sideg fd_e (c_e) t;
       S.combine_env (conv ctx) r fe f args fc es f_ask
     else
@@ -1829,6 +1831,12 @@ struct
   let skip ctx = S.skip (conv ctx)
   let asm ctx = S.asm (conv ctx)
   let event ctx e octx = S.event (conv ctx) e (conv octx)
+  let finalize () = 
+    if GobConfig.get_bool "gobview" then (
+      let save_run = GobConfig.get_string "save_run" in
+      let run_dir = Fpath.v(if save_run <> "" then save_run else "run") in
+      Serialize.marshal !graph Fpath.(run_dir / "graph.marshalled"););
+    S.finalize ()
 end
 
 module CompareGlobSys (SpecSys: SpecSys) =

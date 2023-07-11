@@ -418,7 +418,7 @@ let parse_preprocessed preprocessed =
   let goblint_cwd = GobFpath.cwd () in
   let get_ast_and_record_deps (preprocessed_file, task_opt) =
     let transform_file (path_str, system_header) = match path_str with
-      | "<built-in>" | "<command-line>" ->
+      | "<built-in>" | "<command-line>"| "<eingebaut>" | "<Kommandozeile>" ->
         (path_str, system_header) (* ignore special "paths" *)
       | _ ->
         let path = Fpath.v path_str in
@@ -586,15 +586,17 @@ let do_gobview cilfile =
       let file_loc = Hashtbl.create 113 in
       let counter = ref 0 in
       let copy path =
+        counter := !counter + 1;
+        if Fpath.is_file_path path then 
         let name, ext = Fpath.split_ext (Fpath.base path) in
         let unique_name = Fpath.add_ext ext (Fpath.add_ext (string_of_int !counter) name) in
-        counter := !counter + 1;
         let dest = Fpath.(file_dir // unique_name) in
         let gobview_path = match Fpath.relativize ~root:run_dir dest with
           | Some p -> Fpath.to_string p
           | None -> failwith "The gobview directory should be a prefix of the paths of c files copied to the gobview directory" in
         Hashtbl.add file_loc (Fpath.to_string path) gobview_path;
-        FileUtil.cp [Fpath.to_string path] (Fpath.to_string dest) in
+        FileUtil.cp [Fpath.to_string path] (Fpath.to_string dest)
+in
       let source_paths = Preprocessor.FpathH.to_list Preprocessor.dependencies |> List.concat_map (fun (_, m) -> Fpath.Map.fold (fun p _ acc -> p::acc) m []) in
       List.iter copy source_paths;
       Serialize.marshal file_loc (Fpath.(run_dir / "file_loc.marshalled"));
