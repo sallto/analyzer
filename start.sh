@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-export NODE_OPTIONS=--openssl-legacy-provider
+#export NODE_OPTIONS=--openssl-legacy-provider
 rm -rf run
 eval $(opam env)
 make

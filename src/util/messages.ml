@@ -32,6 +32,12 @@ struct
     in
     get_bool ("warn." ^ (to_string e))
 
+  let to_bootstrap_class x= match x with
+    | Error -> "alert-danger"
+    | Warning -> "alert-warning"
+    | Info -> "alert-info"
+    | Debug -> "alert-debug"
+    | Success -> "alert-success"
   let to_yojson x = `String (show x)
   let of_yojson = function
     | `String "Error" -> Result.Ok Error
