@@ -14,14 +14,13 @@ int transform(int z)
 void a(){
   transform(11);
 }
-void b(){
-  transform(5);
+void b(int z){
+  transform(z);
 }
 
 int main()
 {
-  int z;
+  int z=5;
+  b(z);
   a();
-  b();
-  return z;
 }
