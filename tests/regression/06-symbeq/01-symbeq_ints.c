@@ -1,16 +1,27 @@
 // PARAM: --enable ana.race.direct-arithmetic --set ana.activated[+] "'var_eq'"
-#include<stdio.h>
-//#include <goblint.h>
+#include <stdio.h>
+// #include <goblint.h>
 
-extern int get();
-int main() {
-  int x=5;
-  int z;
-  int y=get();
-  if(y){
-    z=5;
+int transform(int z)
+{
+  if(z>10){
+    return 10;
   }else{
-    z=6;
+    return z;
   }
+}
+
+void a(){
+  transform(11);
+}
+void b(){
+  transform(5);
+}
+
+int main()
+{
+  int z;
+  a();
+  b();
   return z;
 }

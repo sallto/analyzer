@@ -2,6 +2,7 @@
   "ana": {
     "int": {
       "def_exc": true,
+      "def_exc_widen_by_join": true,
       "enums": false,
       "interval": true
     },
@@ -9,7 +10,7 @@
       "widen": false
     },
     "activated": [
-     "base", "mallocWrapper","escape","mutex","mutexEvents","access", "race", "assert","termination", "var_eq"
+     "base", "mallocWrapper","mutex","mutexEvents","escape","access", "assert","termination", "var_eq"
     ],
     "base": {
       "arrays": {
